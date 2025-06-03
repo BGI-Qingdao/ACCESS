@@ -45,10 +45,10 @@ python ./final_code/data/data_prepare.py \
   --processed_dir /path/to/processed_output \
   --label_file labels.csv
 ```
-Optional Parameters:
---split_mode: Data splitting strategy. Options are train_split, all_train, all_valid, all_test. Use 'train_split' for an 8:1:1 split during training. Use 'all_test' to utilize the full dataset during testing. (default: all_test)
---num_workers: Parallel workers (default: 64)
---seed: Random seed (default: 42)
+Optional Parameters: \
+--split_mode: Data splitting strategy. Options are train_split, all_train, all_valid, all_test. Use 'train_split' for an 8:1:1 split during training. Use 'all_test' to utilize the full dataset during testing. (default: all_test) \
+--num_workers: Parallel workers (default: 64) \
+--seed: Random seed (default: 42) \
 
 #### Training Module
 ```bash

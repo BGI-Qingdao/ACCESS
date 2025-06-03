@@ -48,7 +48,7 @@ python ./final_code/data/data_prepare.py \
 Optional Parameters: \
 --split_mode: Data splitting strategy. Options are train_split, all_train, all_valid, all_test. Use 'train_split' for an 8:1:1 split during training. Use 'all_test' to utilize the full dataset during testing. (default: all_test) \
 --num_workers: Parallel workers (default: 64) \
---seed: Random seed (default: 42) \
+--seed: Random seed (default: 42)
 
 #### Training Module
 ```bash
@@ -58,7 +58,7 @@ python ./final_code/training/train.py \
 ```
 Optional Parameters: \
 --batch_size: Training batch size (default: 8) \
---num_workers: Data loader workers (default: 2) \
+--num_workers: Data loader workers (default: 2)
 
 #### Inference Module
 ```bash
@@ -71,7 +71,7 @@ Optional Parameters:
 --print_true_label: Print true labels in output \
 --print_embedding: Print embeddings in output \
 --batch_size: Inference batch size (default: 8) \
---num_workers: Data loader workers (default: 2) \
+--num_workers: Data loader workers (default: 2)
 
 ## 📝 Format Specifications
 Use -- separators between major sections

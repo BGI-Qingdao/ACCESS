@@ -67,7 +67,7 @@ python ./final_code/inference/inference.py \
   --root_dir ./final_code/gvp_protein_embedding/processed \
   --resultFolder ./complete_code/result
 ```
-Optional Parameters:
+Optional Parameters: \
 --print_true_label: Print true labels in output \
 --print_embedding: Print embeddings in output \
 --batch_size: Inference batch size (default: 8) \

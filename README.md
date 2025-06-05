@@ -1,8 +1,8 @@
-# ACCESS_v2: Graph Neural Network-Based EC Number Prediction Analysis Software version 2
+# ACCESS: Graph Neural Network-Based EC Number Prediction Analysis Software
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## 🧬 Project Overview
-ACCESS_v2 is a cutting-edge computational tool in the field of biomanufacturing. It innovatively integrates 3D protein structural topology, residue-level Rosetta energy, and side-chain features to construct a hybrid graph neural network architecture based on multimodal feature fusion. By leveraging hierarchical contrastive learning to build a protein "semantic space," it enables accurate prediction of protein functions. Moreover, it employs a topology-aware gradient attention mechanism to precisely identify key functional residues. This creates a comprehensive closed-loop intelligent optimization system that covers activity existence, function prediction, and rational design, thus overcoming the limitations of traditional tools.
+ACCESS is a cutting-edge computational tool in the field of biomanufacturing. It innovatively integrates 3D protein structural topology, residue-level Rosetta energy, and side-chain features to construct a hybrid graph neural network architecture based on multimodal feature fusion. By leveraging hierarchical contrastive learning to build a protein "semantic space," it enables accurate prediction of protein functions. Moreover, it employs a topology-aware gradient attention mechanism to precisely identify key functional residues. This creates a comprehensive closed-loop intelligent optimization system that covers activity existence, function prediction, and rational design, thus overcoming the limitations of traditional tools.
 ![image](https://github.com/user-attachments/assets/1ee86e4d-225c-476b-a6c4-066a006717dd)
 
 ## ✨ Core Features

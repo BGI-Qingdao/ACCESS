@@ -252,7 +252,7 @@ class ACCSEE_DataSet(Dataset):
         return data   
 
 if __name__ == '__main__':
-    root_dir = "./complete_code/gvp_protein_embedding_54w_complemented/processed"
+    root_dir = "./access/gvp_protein_embedding/processed"
     csv_file_path = root_dir + '/data_length.csv'
     dataset = ACCSEE_DataSet(root_dir,csv_file_path,type='train') 
     train_sampler = FileWiseSubsetRandomSampler(dataset, replacement=False)

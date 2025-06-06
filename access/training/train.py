@@ -569,9 +569,9 @@ if __name__ == '__main__':
     Seed_everything(seed=42)
     parser = argparse.ArgumentParser(description='Train your own ACCESS model.')
     
-    parser.add_argument("--root_dir", type=str, default="./final_code/gvp_protein_embedding/processed", 
+    parser.add_argument("--root_dir", type=str, default="./access/gvp_protein_embedding/processed", 
                         help="Root directory containing processed data")
-    parser.add_argument("--resultFolder", type=str, default="./final_code/result",
+    parser.add_argument("--resultFolder", type=str, default="./access/result",
                         help="Output directory for models and results.")
     
     parser.add_argument("--batch_size", type=int, default=8,

@@ -1,0 +1,65 @@
+<ROSETTASCRIPTS>
+    <SCOREFXNS>
+        <ScoreFunction name="ref_pure" weights="ref2015"/>
+    </SCOREFXNS>
+
+    <RESIDUE_SELECTORS>
+    <ResiduePDBInfoHasLabel name="all_disulf" property="DISULFIDIZE"/>
+    </RESIDUE_SELECTORS>
+
+    <TASKOPERATIONS>
+        
+        <OperateOnResidueSubset name="disulf_res">
+            <Not selector="all_disulf"/>
+            <PreventRepackingRLT/>
+        </OperateOnResidueSubset>
+    </TASKOPERATIONS>
+    
+    
+    <FILTERS>
+
+        <ResidueCount name="nres" confidence="0"/>
+
+        <NetCharge name="net_charge" min="-550" max="550" chain="0"/>
+
+        <AverageDegree name="degree" confidence="0"/>
+
+        <AverageDegree name="degree_disulf" confidence="0" task_operations="disulf_res"/>
+
+        <CavityVolume name="cavity_volume" confidence="0"/>
+        <PackStat name="packstat" confidence="0"/>
+
+        <AtomicContactCount name="contacts" confidence="0"/>
+
+
+        <TotalSasa name="exposed_total" confidence="0"/>
+        <TotalSasa name="exposed_hydrophobics" confidence="0" hydrophobic="True"/>
+        <TotalSasa name="exposed_polars" confidence="0" polar="True"/>
+
+        <BuriedUnsatHbonds2 name="unsat_hbond2" jump_number="0" confidence="0"/>
+
+
+    </FILTERS>
+
+    <SIMPLE_METRICS>
+    </SIMPLE_METRICS>
+
+    <MOVERS>
+    </MOVERS>
+
+    <PROTOCOLS>
+        <Add filter="nres"/>
+        <Add filter="net_charge"/>
+        <Add filter="degree"/>
+        <Add filter="degree_disulf"/>
+        <Add filter="cavity_volume"/>
+        <Add filter="packstat"/>
+        <Add filter="contacts"/>
+        <Add filter="exposed_total"/>
+        <Add filter="exposed_hydrophobics"/>
+        <Add filter="exposed_polars"/>
+        <Add filter="unsat_hbond2"/>
+    </PROTOCOLS>
+    <OUTPUT scorefxn="ref_pure"/>
+</ROSETTASCRIPTS>
+

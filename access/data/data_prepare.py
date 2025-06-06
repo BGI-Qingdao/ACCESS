@@ -780,17 +780,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Protein graph dataset processing')
     
     # Input/output parameters
-    parser.add_argument('--pdb_dir', type=str, default='/share/org/BGI/bgi_wangdt/liuqifan/GNN_classification/PDB_sprot',
+    parser.add_argument('--pdb_dir', type=str, default='./rosetta/pdb_rosetta',
                         help='Directory containing PDB files')
-    parser.add_argument('--include_dir', type=str, default='/share/org/BGI/bgi_wangdt/liuqifan/GNN_classification/PDB_file',
+    parser.add_argument('--include_dir', type=str, default='./PDB_file',
                         help='Directory containing filter/label files')
-    parser.add_argument('--embedding_dir', type=str, default='/share/org/BGI/bgi_wangdt/liuqifan/GNN_classification/final_code/gvp_protein_embedding',
+    parser.add_argument('--embedding_dir', type=str, default='./access/gvp_protein_embedding',
                         help='Base directory for embedding outputs')
-    parser.add_argument('--processed_dir', type=str, default='/share/org/BGI/bgi_wangdt/liuqifan/GNN_classification/final_code/gvp_protein_embedding/processed',  #processed_struct_seq_low processed_price processed_new processed processed_struct  processed_seqlow_structhigh  processed_structlow_seqhigh
+    parser.add_argument('--processed_dir', type=str, default='./access/gvp_protein_embedding/processed',  
                         help='Processed dataset output directory')
     
     # File parameters
-    parser.add_argument('--label_file', type=str, default='benchmark_test_labels_new_0001.csv',
+    parser.add_argument('--label_file', type=str, default='benchmark_train_labels_all_0001.csv',
                         help='Name of label CSV file in include_dir')
     parser.add_argument('--split_mode', type=str, 
                       choices=['train_split', 'all_train', 'all_valid', 'all_test'],

@@ -84,11 +84,11 @@ if __name__ == '__main__':
     Seed_everything(seed=42)
     parser = argparse.ArgumentParser(description='Train your own ACCESS model.')
 
-    parser.add_argument("--model", type=str, default="./final_code/saved_models/best_model.pt",
+    parser.add_argument("--model", type=str, default="./access/saved_models/best_model.pt",
                         help="Path to the model.")
-    parser.add_argument("--root_dir", type=str, default="att_trace_back_res/gvp_protein_embedding/processed_test",
+    parser.add_argument("--root_dir", type=str, default="./access/gvp_protein_embedding/processed",
                         help="Root directory containing processed data")
-    parser.add_argument("--resultFolder", type=str, default="./final_code/inference_result",
+    parser.add_argument("--resultFolder", type=str, default="./access/inference_result",
                         help="Output directory for models and results.")
     
     #If the parameter is not added, the default is False.

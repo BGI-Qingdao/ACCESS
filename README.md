@@ -1,4 +1,4 @@
-# ACCESS: Graph Neural Network-Based EC Number Prediction Analysis Software
+# ACCESS: graph contrAstive learning-based protein funCtion prediCtion by combing Energy, Structure and Sequence information.
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## 🧬 Project Overview

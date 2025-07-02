@@ -37,37 +37,6 @@ def flatten_dense_to_sparse(x_dense, mask):
     valid_elements = x_dense[mask_expanded].view(-1, x_dense.size(-1))
     return valid_elements
 
-def per_protein_normalization(rosetta_dense, mask):
-    """
-    参数:
-        rosetta_dense : [batch, max_res, 20]
-        mask         : [batch, max_res] (1=有效, 0=填充)
-    
-    返回:
-        normalized   : [batch, max_res, 20]
-    """
-    # 计算每个蛋白的有效氨基酸数
-    num_residues = mask.sum(dim=1, keepdim=True)  # [batch, 1]
-
-    # 计算均值 (忽略填充部分)
-    mean = (rosetta_dense * mask.unsqueeze(-1)).sum(dim=1) / num_residues  # [batch, 20]
-    
-    # 计算方差
-    var = (
-        ((rosetta_dense - mean.unsqueeze(1)) ** 2) * mask.unsqueeze(-1)
-    ).sum(dim=1) / num_residues  # [batch, 20]
-    
-    # 计算标准差
-    std = torch.sqrt(var + 1e-8)  # 数值稳定性
-
-    # 标准化
-    normalized = (rosetta_dense - mean.unsqueeze(1)) / std.unsqueeze(1)
-    
-    # 将填充位置置零（可选）
-    normalized = normalized * mask.unsqueeze(-1)
-    
-    return normalized
-
 class GVP_embedding(nn.Module):
     '''
     Modified based on https://github.com/drorlab/gvp-pytorch/blob/main/gvp/models.py
@@ -197,7 +166,7 @@ class GCNEmbedding(nn.Module):
 
     def _init_parameters(self):
         """Initialize model parameters."""
-        xavier_uniform_(self.W1.view(-1, self.embed_dim))  # 展平后初始化
+        xavier_uniform_(self.W1.view(-1, self.embed_dim))
         xavier_uniform_(self.W2.view(-1, self.embed_dim))
         nn.init.zeros_(self.b1)
         nn.init.zeros_(self.b2)
@@ -258,14 +227,14 @@ class ACCESS(torch.nn.Module):
         self.ec_file = ec_file
         self.cooc_counts = defaultdict(int)
         self._init_ec_embedding()
-        self.ec_cache = {}  # 缓存EC解析结果
+        self.ec_cache = {} # Cache for parsed EC numbers
         
         self.conv_protein = GVP_embedding((38, 3), (embedding_channels, 16), 
                                             (32, 1), (32, 1), seq_in=True,drop_rate = dropout)
         self.gat_layers = nn.ModuleList([
                 GATConv(num_node_features, hidden_channels // num_heads, heads=num_heads, dropout=dropout,edge_dim=32)
             for _ in range(1)])
-        self.fc2 = nn.Linear(embedding_channels+embedding_channels+ protein_feature_count, 128)  # 处理拼接后的特征
+        self.fc2 = nn.Linear(embedding_channels+embedding_channels+ protein_feature_count, 128) 
         self.fc3 = nn.Linear(128, 64)  
         self.label_optimizer = GCNEmbedding(len(self.node_dict), emb_dim)
 

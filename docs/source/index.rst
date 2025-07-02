@@ -22,9 +22,9 @@
 
 ACCESS
 ========================================================
-.. rubric:: graph contrAstive learning-based protein funCtion prediCtion by combing Energy, Structure and Sequence information.
+.. rubric:: Decoding the Energetic Blueprint of Extremophile Enzyme: A Multimodal AI Framework for Functional Discovery Beyond Sequence and Structure Homology.
 
-**ACCESS** is a specialized open-source Python package in the field of biomanufacturing. It aims to offer high-precision EC number prediction for the rational design of industrial enzymes, 
+**ACCESS** is a specialized open-souhierarchyrce Python package in the field of biomanufacturing. It aims to offer high-precision EC number prediction for the rational design of industrial enzymes, 
 screening of functional proteins, and enzyme reaction optimization using MIT license. By combining 3D protein structural features, side-chain features, and residue-level Rosetta energy, 
 it uses a hybrid graph neural network architecture. Based on hierarchical contrastive learning and multi-label adaptive fine-tuning, it predicts protein functions. 
 Through a topology-aware gradient attention mechanism, it precisely locates function - critical residues. 

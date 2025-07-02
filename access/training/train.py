@@ -618,7 +618,7 @@ if __name__ == '__main__':
     dropout = 0.3
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    ec_file_path = "./PDB_file/benchmark_train_labels_all_0001.csv"
+    ec_file_path = "./PDB_file/train_labels_all_0001.csv"
     model = get_model(device = device,ec_file=ec_file_path,dropout=dropout)
     
     #Calculate the number of model parameters

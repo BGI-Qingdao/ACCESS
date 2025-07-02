@@ -790,7 +790,7 @@ if __name__ == '__main__':
                         help='Processed dataset output directory')
     
     # File parameters
-    parser.add_argument('--label_file', type=str, default='benchmark_train_labels_all_0001.csv',
+    parser.add_argument('--label_file', type=str, default='train_labels_all_0001.csv',
                         help='Name of label CSV file in include_dir')
     parser.add_argument('--split_mode', type=str, 
                       choices=['train_split', 'all_train', 'all_valid', 'all_test'],

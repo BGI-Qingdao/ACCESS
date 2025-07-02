@@ -2,7 +2,7 @@ path_structures="../pdb"
 feature_file="../features.xml"
 path_compute="./pdb_rosetta"
 
-input_file_list="../pdb_list/pdb_list.txt"
+input_file_list="path/pdb_list/pdb_list.txt"
 
 cd $path_compute
 

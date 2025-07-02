@@ -18,6 +18,10 @@ A Guide to Rosetta Energy Calculation
 ++++++++++++++++++++++++++++++++++++++++++++++++
 Directory Structure
 ***************************
+
+The Rosetta project directory is organized in a hierarchical manner to facilitate efficient workflow and computation. 
+Below is an illustrative structure:
+
 .. code-block:: bash
    :caption: Rosetta Project Directory Structure
 
@@ -33,6 +37,9 @@ Directory Structure
 
 Single - Task Calculation
 ****************************
+
+Follow these steps to perform a single - task calculation:
+
 .. code-block:: bash
 
     # Go to the working directory
@@ -46,6 +53,9 @@ Single - Task Calculation
 
 Parallel Computing
 ****************************
+
+For parallel computing, follow these steps:
+
 .. code-block:: bash
 
     cd rosetta
@@ -135,6 +145,8 @@ Data Preparation and Training/Inference Modules
 Data Preparation Module
 *****************************************
 
+This module is designed to prepare your data for further processing and training. It organizes and processes raw PDB files, embeddings, and labels into a structured format suitable for model training.
+
 Command Syntax
 ~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: bash
@@ -187,6 +199,8 @@ Optional Parameters
 Training Module
 *****************************************
 
+The training module is responsible for training the model on the prepared dataset. It leverages the processed data to learn patterns and relationships within the protein structures.
+
 Command Syntax
 ~~~~~~~~~~~~~~~
 .. code-block:: bash
@@ -215,6 +229,8 @@ Parameters
 
 Inference Module
 *****************************************
+
+Once the model is trained, the inference module allows you to make predictions on new data. It uses the trained model to generate predictions based on the input data.
 
 Command Syntax
 ~~~~~~~~~~~~~~~

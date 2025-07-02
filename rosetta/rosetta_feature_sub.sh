@@ -1,6 +1,6 @@
 #!/bin/bash
 
-path_compute="./pdb_list"
+path_compute="path/pdb_list"
 total_workers=64  # Node CPU cores
 
 # Parallel execution of all tasks (with 1 CPU bound to each task)

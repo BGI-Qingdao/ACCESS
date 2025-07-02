@@ -7,7 +7,7 @@ python ./access/data/data_prepare.py \
   --include_dir ./PDB_file \                 # Directory for specific PDB files to include
   --embedding_dir ./access/gvp_protein_embedding \  # Output directory for GVP embeddings
   --processed_dir ./access/gvp_protein_embedding/processed \  # Directory for preprocessed data
-  --label_file benchmark_train_labels_all_0001.csv \  # Training label file
+  --label_file train_labels_all_0001.csv \  # Training label file
   --split_mode train_split                   # Data splitting mode (training set)
 ```
 

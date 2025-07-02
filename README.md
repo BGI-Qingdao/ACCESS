@@ -1,4 +1,4 @@
-# ACCESS: graph contrAstive learning-based protein funCtion prediCtion by combing Energy, Structure and Sequence information.
+# ACCESS: Decoding the Energetic Blueprint of Extremophile Enzyme: ​A Multimodal AI Framework for Functional Discovery Beyond Sequence and Structure Homology​.
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## 🧬 Project Overview

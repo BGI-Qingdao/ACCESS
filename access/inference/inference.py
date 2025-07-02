@@ -134,7 +134,7 @@ if __name__ == '__main__':
     dropout = 0.3
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    ec_file_path = "./PDB_file/benchmark_train_labels_all_0001.csv"
+    ec_file_path = "./PDB_file/train_labels_all_0001.csv"
     model = get_model(device = device,ec_file=ec_file_path,dropout=dropout)
     #Calculate the number of model parameters
     num_params = sum(p.numel() for p in model.parameters())
@@ -238,6 +238,8 @@ if __name__ == '__main__':
                 valid_values = abs_local_importance[valid_indices]
                 sorted_values, sort_order = torch.sort(valid_values, descending=True)
                 sorted_indices = valid_indices[sort_order]
+                if len(sorted_indices) > 50:
+                    sorted_indices = sorted_indices[:50]
                 sorted_indices_1_based = (sorted_indices + 1).cpu().tolist()
             
             batch_top_nodes.append(sorted_indices_1_based)             

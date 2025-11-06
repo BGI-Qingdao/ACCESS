@@ -14,7 +14,7 @@
 
 
 ## Discussion 
-Please use GitHub [issues](https://github.com/mrqfliu/ACCESS/issues) tracker for reports and discussions of:
+Please use GitHub [issues](https://github.com/BGI-Qingdao/ACCESS/issues) tracker for reports and discussions of:
  - Bug reports
  - Document and data issues
  - Feature requirements

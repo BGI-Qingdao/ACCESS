@@ -18,7 +18,7 @@ Please use GitHub [issues](https://github.com/BGI-Qingdao/ACCESS/issues) tracker
  - Bug reports
  - Document and data issues
  - Feature requirements
- - ...
+ - ... ...
 
 ## Contribution 
 **ACCESS** is in a stage of rapid development so that we will carefully consider all aspects of your proposal. We hope future input will be given by both users and developers.

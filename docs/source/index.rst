@@ -32,7 +32,7 @@ This approach pioneers a multimodal feature fusion graph neural network architec
 surmounting the limitations of conventional tools.
 
 * Get quickly started by browsing :ref:`installation-guide`, :ref:`basic-usage` or :ref:`tutorials-index`.
-* Open to discuss and provide feedback on `Github <https://github.com/mrqfliu/ACCESS.git>`_.
+* Open to discuss and provide feedback on `Github <https://github.com/BGI-Qingdao/ACCESS.git>`_.
 
 
 Highlights

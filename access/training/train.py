@@ -112,103 +112,113 @@ def filter_ec_numbers(ec_list):
 
     return filtered_ec_list
 
-# def write_max_sep_choices(df, csv_name, first_grad=True):#use_max_grad=False,
-#     out_file = open(csv_name + '_maxsep.csv', 'a', newline='')
-#     csvwriter = csv.writer(out_file, delimiter=',')
-#     for col in df.columns:
-#         ec = []
-#         smallest_10_dist_df = df[col].nsmallest(10)
-#         dist_lst = list(smallest_10_dist_df)
-#         max_sep_i = maximum_separation(dist_lst, first_grad)
-#         candidate_ecs = smallest_10_dist_df.index[:max_sep_i+1].tolist()
-#         filtered_ecs = filter_ec_numbers(candidate_ecs)
-#         ec_row = [col]
-#         for ec in filtered_ecs:
-#             dist = smallest_10_dist_df[ec]
-#             dist_str = "{:.4f}".format(dist)
-            
-#             ec_row.append('EC:' + str(ec) + '/' + dist_str)
-#         csvwriter.writerow(ec_row)
-#     return
+def compute_confidence_simple(distances, best_idx):
+    group_dist = np.array(distances[:best_idx+1])
+    confidences = 1 / (1 + np.exp(group_dist - 1))
+    base_conf = 1 / (1 + np.exp(group_dist - 1))
+    
+    min_conf = 1 / (1 + np.exp(2 - 1)) 
+    max_conf = 1 / (1 + np.exp(0 - 1))
+    range_conf = max_conf - min_conf
+    
+    confidences = (base_conf - min_conf) / range_conf
+    return np.round(confidences, 4)
 
 def write_max_sep_choices(df, first_grad=True):
-    """返回包含预测EC和原始距离数据的元组"""
+    """
+    Return a tuple containing predicted EC numbers and raw distance data.
+    1. For every protein column, grab its 10 nearest neighbors.
+    2. Run maximum-separation on these 10 distances to decide how many ECs to keep.
+    3. Filter and return the resulting EC list together with the top-10 distance records.
+    """
     result_ec = []
     all_top_candidates = {}
-    
+    confidences = []
     for col in df.columns:
-        # 获取前10最近邻数据
+        # Top-10 smallest distances for this protein
         smallest_10 = df[col].nsmallest(10)
         all_top_candidates[col] = smallest_10.copy()
-        
-        # 核心算法保持不变
+
+        # Maximum-separation step
         distances = smallest_10.tolist()
         max_sep_i = maximum_separation(distances, first_grad)
-        candidate_ecs = smallest_10.index[:max_sep_i+1].tolist()
+
+        candidate_ecs = smallest_10.index[:max_sep_i + 1].tolist()
         filtered_ecs = filter_ec_numbers(candidate_ecs)
+
+        confidences.append(compute_confidence_simple(distances, max_sep_i))
         
         result_ec.append(';'.join(filtered_ecs))
-    
-    return result_ec, all_top_candidates
 
-def save_prediction_results(ids, result_ec, pred_path, top10_dist, batch_top_nodes=None):
+    return result_ec, all_top_candidates, confidences
+
+def save_prediction_results(ids, result_ec, pred_path, top10_dist, confidences=None, batch_top_nodes=None):
     """
-    通用预测结果保存函数
-    :param ids: 蛋白质ID列表
-    :param result_ec: 预测EC号列表
-    :param pred_path: 预测文件路径
-    :param top10_dist: EC号距离字典
-    :param batch_top_nodes: 关键残基列表（可选）
+    Generic function to save prediction results.
+
+    Parameters
+    ----------
+    ids : list[str]
+        Protein IDs.
+    result_ec : list[str]
+        Predicted EC numbers, semicolon-separated.
+    pred_path : str
+        Output TSV file path.
+    top10_dist : dict
+        {protein: {EC: distance}} for the 10 nearest neighbors.
+    batch_top_nodes : list[list[int]], optional
+        Lists of key residues per protein.
     """
-    # 创建最终结果列表
     final_results = []
-    
-    # 根据是否有关键残基数据选择遍历方式
+
+    # Decide how to iterate based on the presence of key-residue data
     iter_data = zip(ids, result_ec, batch_top_nodes) if batch_top_nodes else zip(ids, result_ec)
-    
-    for item in iter_data:
-        name = item[0]
-        ec = item[1]
+
+    for item,confidence in zip(iter_data,confidences):
+        name, ec = item[0], item[1]
         top_nodes = item[2] if batch_top_nodes else None
-        
-        # 处理EC距离信息
+
+        # Prepare EC/distance pairs
         ec_list = ec.split(';')
         ec_dist_list = []
         has_non_zero_ec = any(e != '0.-.-.-' for e in ec_list)
         
-        for e in ec_list:
-            dist = top10_dist[name][e]
-            ec_dist_list.append(f"{e}/{dist:.4f}")
-        
+        if confidences is None:
+            for e in ec_list:
+                dist = top10_dist[name][e]
+                ec_dist_list.append(f"{e}/{dist:.4f}")
+        else:
+            for e , conf in zip(ec_list,confidence):
+                ec_dist_list.append(f"{e}/{conf:.4f}")            
+
         ec_dist_str = ';'.join(ec_dist_list)
-        
-        # 处理关键残基数据
+
+        # Handle key-residue data
         if batch_top_nodes:
-            # 如果所有EC号均为0则清空关键残基
             top_nodes = [] if not has_non_zero_ec else top_nodes
             top_nodes_str = ', '.join(map(str, top_nodes)) if top_nodes else ''
-        
-        # 组装结果元组
+
+        # Build result row
         if batch_top_nodes:
             final_results.append((name, ec_dist_str, top_nodes_str))
         else:
             final_results.append((name, ec_dist_str))
 
     file_exists = os.path.isfile(pred_path)
-    
+
     with open(pred_path, 'a', newline='') as predfile:
         writer = csv.writer(predfile, delimiter='\t')
-        
-        # 动态生成表头
+
+        # Dynamic header
         headers = ['protein_name', 'pred_label']
         if batch_top_nodes:
             headers.append('key_residues')
-        
-        # 写入表头（仅当文件不存在时）
+
+        # Write header only once (file is new or empty)
         if not file_exists or os.path.getsize(pred_path) == 0:
             writer.writerow(headers)
-        
-        # 写入数据行
+
+        # Append data rows
         for row in final_results:
             writer.writerow(row)
 
@@ -711,7 +721,7 @@ if __name__ == '__main__':
                 # Additional validation logic (e.g., saving predictions and labels)
                 ids = data['protein_name']
                 eval_similarity = dist_map_helper(ids, model_output['pred'], list(emb_dict.keys()), model.ec_embeddings)
-                result_ec, top10_dist = write_max_sep_choices(pd.DataFrame.from_dict(eval_similarity))
+                result_ec, top10_dist, _ = write_max_sep_choices(pd.DataFrame.from_dict(eval_similarity))
                 save_prediction_results(ids,result_ec,out_filename + '_pred.csv',top10_dist) 
                 
                 # Save true labels to CSV
@@ -835,7 +845,7 @@ if __name__ == '__main__':
             ids = data['protein_name']
             eval_similarity = dist_map_helper(ids, model_output['pred'], list(emb_dict.keys()), model.ec_embeddings)
             
-            result_ec, top10_dist = write_max_sep_choices(pd.DataFrame.from_dict(eval_similarity))
+            result_ec, top10_dist, _ = write_max_sep_choices(pd.DataFrame.from_dict(eval_similarity))
             save_prediction_results(ids,result_ec,test_filename + '_pred.csv',top10_dist) 
             
             # Save true labels to CSV

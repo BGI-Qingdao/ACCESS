@@ -242,6 +242,7 @@ Command Syntax
       --resultFolder ./access/result \
       [--print_true_label] \
       [--print_embedding] \
+      [--conf] \
       [--batch_size SIZE] \
       [--num_workers NUM]
 
@@ -266,6 +267,8 @@ Optional Flags
 | ``--print_true_label`` | Display true labels in output                 |
 +------------------------+-----------------------------------------------+
 | ``--print_embedding``  | Output embeddings in results                  |
++------------------------+-----------------------------------------------+
+| ``--conf``             | Output confidence scores in results           |
 +------------------------+-----------------------------------------------+
 
 Optional Parameters

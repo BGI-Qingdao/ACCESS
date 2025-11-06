@@ -4,26 +4,6 @@ from torch.nn.utils.rnn import pad_sequence
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from training.train import *
 
-def write_max_sep_choices(df, first_grad=True):
-    """Return a tuple containing predicted ECs and raw distance data"""
-    result_ec = []
-    all_top_candidates = {}
-    
-    for col in df.columns:
-        # Get the top 10 nearest neighbor data
-        smallest_10 = df[col].nsmallest(10)
-        all_top_candidates[col] = smallest_10.copy()
-        
-        # Core algorithm
-        distances = smallest_10.tolist()
-        max_sep_i = maximum_separation(distances, first_grad)
-        candidate_ecs = smallest_10.index[:max_sep_i+1].tolist()
-        filtered_ecs = filter_ec_numbers(candidate_ecs)
-        
-        result_ec.append(';'.join(filtered_ecs))
-    
-    return result_ec, all_top_candidates
-
 def get_batch_indices(batch_tensor):
     """
     Get the start and end indices of each protein in the concatenated sequence
@@ -96,6 +76,10 @@ if __name__ == '__main__':
                         help="Whether to print true labels in output")  
     parser.add_argument("--print_embedding", action='store_true',
                         help="Whether to print embeddings in output")
+    
+    parser.add_argument("--conf", action='store_true',
+                        help="Whether to print confidences in output")
+    
     parser.add_argument("--batch_size", type=int, default=8,
                         help="Number of samples per batch")
     
@@ -103,7 +87,8 @@ if __name__ == '__main__':
                         help="Number of data loading workers")    
 
     args = parser.parse_args()
-
+    
+    # args.conf = True
     # args.print_true_label = True
     # args.print_embedding = True
     
@@ -177,7 +162,7 @@ if __name__ == '__main__':
         ids = data['protein_name']
         eval_similarity = dist_map_helper(ids, model_output['pred'], list(emb_dict.keys()), model.ec_embeddings)
         eval_df = pd.DataFrame.from_dict(eval_similarity)
-        result_ec, top10_dist = write_max_sep_choices(pd.DataFrame.from_dict(eval_similarity))
+        result_ec, top10_dist, confidences = write_max_sep_choices(pd.DataFrame.from_dict(eval_similarity))
         ec_embeddings_list = model.get_embeddings(result_ec,device=device)
         # Embedding alignment processing
         ec_valid_mask = pad_sequence(
@@ -244,7 +229,10 @@ if __name__ == '__main__':
             
             batch_top_nodes.append(sorted_indices_1_based)             
 
-        save_prediction_results(ids,result_ec,test_filename + '_inference_pred.csv',top10_dist,batch_top_nodes = batch_top_nodes)
+        if args.conf:
+            save_prediction_results(ids,result_ec,test_filename + '_inference_pred.csv',top10_dist,confidences = confidences,batch_top_nodes = batch_top_nodes)
+        else:
+            save_prediction_results(ids,result_ec,test_filename + '_inference_pred.csv',top10_dist,batch_top_nodes = batch_top_nodes)
                 
         result_dict = {}
         if args.print_true_label or args.print_embedding:
